@@ -16,24 +16,12 @@ It displays all eight planets orbiting the Sun with adjustable speeds, realistic
 
 ---
 
-## 📂 Project Structure
-
-.
-├── index.html # Main HTML page
-├── main.js # JavaScript with Three.js logic
-├── styles.css # Basic styling
-├── assets/ # Images of planets and Sun
-│ ├── mercury.jpg
-│ ├── venus.jpg
-│ ├── earth.jpg
-│ ├── mars.jpg
-│ ├── jupiter.jpg
-│ ├── saturn.jpg
-│ ├── uranus.jpg
-│ ├── neptune.jpg
-│ └── sun.jpg
-└── README.md # Project documentation
-
+**File Descriptions:**
+- `index.html` – Main HTML page
+- `main.js` – JavaScript logic with Three.js
+- `styles.css` – Basic styling
+- `assets/` – Planet and Sun textures
+- `README.md` – Project documentation
 🎮 Controls
 Use the sliders to adjust each planet’s orbital speed in real time.
 
