@@ -66,40 +66,63 @@ scene.add(starField);
 const planetNames = ['mercury','venus','earth','mars','jupiter','saturn','uranus','neptune'];
 const planets = new Array(planetNames.length);
 
+// Loader logic
+const loaderOverlay = document.getElementById('loader-overlay');
+let loadedTextures = 0;
+const totalPlanets = 8;
+let loaderTimeout = setTimeout(() => {
+  loaderOverlay.style.display = 'flex';
+}, 2000);
+function hideLoaderIfDone() {
+  loadedTextures++;
+  if (loadedTextures >= totalPlanets) {
+    loaderOverlay.style.opacity = '0';
+    setTimeout(() => { loaderOverlay.style.display = 'none'; }, 600);
+    clearTimeout(loaderTimeout);
+  }
+}
+
 function createPlanet(radius, name, distance, speed, index) {
+  // Create mesh immediately with default color
+  const material = new THREE.MeshStandardMaterial({ color: 0x888888 });
+  const geometry = new THREE.SphereGeometry(radius, 32, 32);
+  const mesh = new THREE.Mesh(geometry, material);
+  mesh.userData = { name };
+  mesh.position.x = distance;
+  scene.add(mesh);
+  planets[index] = { planet: mesh, distance, speed, angle: Math.random() * Math.PI * 2, name };
+  // Start loading texture in background
   loader.load(
     texturePath(name),
     (texture) => {
-      const material = new THREE.MeshStandardMaterial({ map: texture });
-      const geometry = new THREE.SphereGeometry(radius, 32, 32);
-      const mesh = new THREE.Mesh(geometry, material);
-      mesh.userData = { name };
-      mesh.position.x = distance;
-      scene.add(mesh);
-      planets[index] = { planet: mesh, distance, speed, angle: Math.random() * Math.PI * 2, name };
-      if (name === 'saturn') {
-        loader.load('https://threejs.org/examples/textures/saturnringcolor.jpg', (saturnRingTexture) => {
-          const saturnRingGeometry = new THREE.RingGeometry(10, 16, 64);
-          const saturnRingMaterial = new THREE.MeshBasicMaterial({ map: saturnRingTexture, side: THREE.DoubleSide, transparent: true, opacity: 0.7 });
-          const saturnRing = new THREE.Mesh(saturnRingGeometry, saturnRingMaterial);
-          saturnRing.rotation.x = Math.PI / 2.2;
-          saturnRing.position.copy(mesh.position);
-          mesh.add(saturnRing);
-        });
-      }
+      mesh.material.map = texture;
+      mesh.material.needsUpdate = true;
+      hideLoaderIfDone();
     },
     undefined,
     () => {
-      // Fallback if texture fails
-      const material = new THREE.MeshStandardMaterial({ color: 0x888888 });
-      const geometry = new THREE.SphereGeometry(radius, 32, 32);
-      const mesh = new THREE.Mesh(geometry, material);
-      mesh.userData = { name };
-      mesh.position.x = distance;
-      scene.add(mesh);
-      planets[index] = { planet: mesh, distance, speed, angle: Math.random() * Math.PI * 2, name };
+      // On error, still count as loaded
+      hideLoaderIfDone();
     }
   );
+  if (name === 'saturn') {
+    // Saturn's radius
+    const saturnRadius = radius;
+    // Add Saturn's rings immediately, centered and sized to fit planet
+    const ringInner = saturnRadius * 1.05; // just outside planet
+    const ringOuter = saturnRadius * 1.35; // a bit larger for visible ring
+    const saturnRingGeometry = new THREE.RingGeometry(ringInner, ringOuter, 128);
+    const saturnRingMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff, side: THREE.DoubleSide, transparent: true, opacity: 0.7, roughness: 0.6, metalness: 0.2 });
+    const saturnRing = new THREE.Mesh(saturnRingGeometry, saturnRingMaterial);
+    saturnRing.position.set(0, 0, 0); // center on planet
+    saturnRing.rotation.x = Math.PI / 2; // flat in XZ plane
+    mesh.add(saturnRing);
+    // Load ring texture in background
+    loader.load('https://threejs.org/examples/textures/saturnringcolor.jpg', (saturnRingTexture) => {
+      saturnRing.material.map = saturnRingTexture;
+      saturnRing.material.needsUpdate = true;
+    });
+  }
 }
 
 // Create planets in the correct order and index
