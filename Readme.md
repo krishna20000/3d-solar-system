@@ -25,12 +25,9 @@ It displays all eight planets orbiting the Sun with adjustable speeds, realistic
 🎮 Controls
 Use the sliders to adjust each planet’s orbital speed in real time.
 
-(Optional) Pause/Resume animation, toggle dark/light mode, or zoom the camera if implemented.
+Pause/Resume animation, toggle dark/light mode, zoom the camera.
 
-🎥 Demo
-[Link to your demo video here]
 
-(2–3 minute video showing simulation, controls, and code walkthrough)
 
 ✨ Technologies Used
 Three.js (WebGL 3D engine)
