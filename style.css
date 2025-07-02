@@ -1,0 +1,105 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: #000;
+  overflow: hidden;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+}
+
+#container {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+}
+
+canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+#controls {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 15px;
+  border-radius: 10px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 0 15px rgba(0,255,255,0.3);
+}
+
+#controls label {
+  display: block;
+  margin: 10px 0;
+  font-size: 14px;
+}
+
+#controls input[type="range"] {
+  width: 150px;
+}
+
+#controls button {
+  margin: 10px 5px 0 0;
+  padding: 6px 14px;
+  border: none;
+  border-radius: 6px;
+  background: #222;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+#controls button:hover {
+  background: #00bcd4;
+  color: #222;
+}
+#label {
+  pointer-events: none;
+  background: rgba(0,0,0,0.8);
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 15px;
+  z-index: 10;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+body.light-mode {
+  background: #f4f4f4;
+  color: #222;
+}
+body.light-mode #controls {
+  background: rgba(255,255,255,0.8);
+  color: #222;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+}
+body.light-mode #label {
+  background: rgba(255,255,255,0.95);
+  color: #222;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+@media (max-width: 600px) {
+  #controls {
+    left: 50%;
+    top: auto;
+    bottom: 10px;
+    transform: translateX(-50%);
+    width: 90vw;
+    padding: 10px;
+    font-size: 13px;
+  }
+  #controls label {
+    font-size: 12px;
+  }
+  #controls input[type="range"] {
+    width: 90px;
+  }
+  #controls button {
+    font-size: 12px;
+    padding: 5px 10px;
+  }
+}
